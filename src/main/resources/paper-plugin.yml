@@ -1,0 +1,5 @@
+name: TinyLobby
+version: '0.0.1'
+main: org.theagent.tinyLobby.TinyLobby
+api-version: '1.21'
+prefix: [ TinyLobby ]
