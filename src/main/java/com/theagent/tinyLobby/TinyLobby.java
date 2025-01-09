@@ -2,6 +2,8 @@ package com.theagent.tinyLobby;
 
 import com.destroystokyo.paper.utils.PaperPluginLogger;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,7 +11,12 @@ import java.util.logging.Logger;
 
 public final class TinyLobby extends JavaPlugin {
 
-    private Logger logger;
+    public static final TextComponent MESSAGE_PREFIX = Component.text("[TinyLobby] ");
+
+    private ConfigurationManager configManager;
+    private ServerSelectorGUI gui;
+
+    public Logger logger;
 
     /**
      * Runs on plugin startup
@@ -17,6 +24,9 @@ public final class TinyLobby extends JavaPlugin {
     @Override
     public void onEnable() {
         logger = PaperPluginLogger.getLogger(getPluginMeta());
+
+        configManager = new ConfigurationManager(this);
+        gui = new ServerSelectorGUI(configManager);
 
         registerCommands();
         registerEvents();
@@ -39,14 +49,15 @@ public final class TinyLobby extends JavaPlugin {
     private void registerCommands() {
         LifecycleEventManager<Plugin> manager = getLifecycleManager();
 
-        new ServerSelectorCommand().initialize(manager);
+        new TinyLobbyCommand(manager, configManager);
+        new ServerSelectorCommand().initialize(manager, gui);
     }
 
     /**
      * Registers event to check if a player clicked a GUI item
      */
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new ServerSelectorGUI(), this);
+        getServer().getPluginManager().registerEvents(gui, this);
     }
 
     /**
@@ -58,7 +69,7 @@ public final class TinyLobby extends JavaPlugin {
                 this,
                 () -> getServer().getOnlinePlayers().forEach(player -> {
                     if (!Names.TextComponentToString(player.getOpenInventory().title()).equals(Names.SERVER_SELECTOR_GUI_TITLE)) {
-                        new ServerSelectorGUI().open(player);
+                        gui.open(player);
                     }
                 }),
                 0,

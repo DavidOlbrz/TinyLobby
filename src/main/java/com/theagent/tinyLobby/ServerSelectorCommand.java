@@ -10,7 +10,7 @@ import org.bukkit.plugin.Plugin;
 
 public class ServerSelectorCommand {
 
-    public void initialize(LifecycleEventManager<Plugin> manager) {
+    public void initialize(LifecycleEventManager<Plugin> manager, ServerSelectorGUI gui) {
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register(
@@ -19,7 +19,7 @@ public class ServerSelectorCommand {
                                 CommandSender sender = context.getSource().getSender();
 
                                 if (sender instanceof Player) {
-                                    new ServerSelectorGUI().open((Player) sender);
+                                    gui.open((Player) sender);
                                 }
 
                                 return Command.SINGLE_SUCCESS;

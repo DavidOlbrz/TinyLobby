@@ -16,23 +16,29 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 public class ServerSelectorGUI implements Listener {
 
-    private final Inventory gui;
+    private final ConfigurationManager configManager;
+    private Inventory gui;
 
-    public ServerSelectorGUI() {
-        gui = Bukkit.createInventory(null, 27, Component.text(Names.SERVER_SELECTOR_GUI_TITLE));
+    public ServerSelectorGUI(ConfigurationManager configManager) {
+        this.configManager = configManager;
     }
 
     /**
      * Adds all items to the GUI
      */
     public void initialize() {
+        gui = Bukkit.createInventory(null, 54, Component.text(configManager.getTitle()));
         // exit server
         gui.setItem(
                 gui.getSize() - 1,
                 createItem(Material.BARRIER, Names.EXIT_ITEM_NAME, NamedTextColor.RED)
         );
+        // servers
+        addServers();
     }
 
     /**
@@ -43,6 +49,21 @@ public class ServerSelectorGUI implements Listener {
     public void open(Player player) {
         initialize();
         player.openInventory(gui);
+    }
+
+    /**
+     * Add all configured servers to the GUI
+     */
+    private void addServers() {
+        Set<String> servers = configManager.getServers();
+
+        servers.forEach(server -> {
+            Server info = configManager.getServerInfo(server);
+            gui.setItem(
+                    Integer.parseInt(server),
+                    createItem(info.getItem(), info.getName(), NamedTextColor.WHITE)
+            );
+        });
     }
 
     /**
@@ -62,7 +83,7 @@ public class ServerSelectorGUI implements Listener {
 
         if (name != null && nameColor != null) {
             ItemMeta meta = item.getItemMeta();
-            meta.displayName(Component.text(name, NamedTextColor.RED));
+            meta.displayName(Component.text(name, nameColor));
             item.setItemMeta(meta);
         }
 
@@ -90,7 +111,7 @@ public class ServerSelectorGUI implements Listener {
 
             switch (Names.TextComponentToString(clickedItem.displayName())) {
                 case Names.EXIT_ITEM_NAME: // disconnect player from the server
-                    player.kick(Component.text("Bye!"), PlayerKickEvent.Cause.PLUGIN);
+                    player.kick(Component.text(configManager.getDisconnectMessage()), PlayerKickEvent.Cause.PLUGIN);
                     break;
             }
         }
