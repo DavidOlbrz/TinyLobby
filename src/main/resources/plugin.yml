@@ -1,5 +1,0 @@
-main: com.theagent.tinyLobby.TinyLobby
-name: TinyLobby
-version: 0.0.1
-api-version: 1.21.3
-prefix: TinyLobby
