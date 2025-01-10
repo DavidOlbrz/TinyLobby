@@ -63,6 +63,7 @@ public class ConfigurationManager {
         String path = "servers." + server + ".";
         return new Server(
                 config.getString(path + "name"),
+                config.getString(path + "proxy-name"),
                 Material.getMaterial(config.getString(path + "item")),
                 config.getString(path + "host"),
                 config.getInt(path + "port")

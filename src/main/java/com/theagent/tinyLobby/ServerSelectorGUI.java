@@ -101,19 +101,24 @@ public class ServerSelectorGUI implements Listener {
         if (Names.TextComponentToString(event.getView().title()).equals(Names.SERVER_SELECTOR_GUI_TITLE)) {
             event.setCancelled(true); // cancel movement of items
 
+            int slot = event.getRawSlot(); // get the slot that was clicked
+
             // check if an item was clicked
-            ItemStack clickedItem = event.getCurrentItem();
-            if (clickedItem == null) {
+            if (event.getView().getItem(slot) == null) {
                 return;
             }
 
-            Player player = (Player) event.getWhoClicked();
+            Player player = (Player) event.getWhoClicked(); // get the player who clicked
 
-            switch (Names.TextComponentToString(clickedItem.displayName())) {
-                case Names.EXIT_ITEM_NAME: // disconnect player from the server
-                    player.kick(Component.text(configManager.getDisconnectMessage()), PlayerKickEvent.Cause.PLUGIN);
-                    break;
+            // check if "exit server" was clicked
+            if (slot == gui.getSize() - 1) {
+                player.kick(Component.text(configManager.getDisconnectMessage()), PlayerKickEvent.Cause.PLUGIN);
+                return;
             }
+
+            // send player to the selected server
+            Server clickedServer = configManager.getServerInfo("" + slot);
+            PlayerSender.send(player, clickedServer.getProxyName());
         }
     }
 

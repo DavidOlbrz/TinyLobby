@@ -31,6 +31,7 @@ public final class TinyLobby extends JavaPlugin {
         registerCommands();
         registerEvents();
         registerScheduler();
+        registerPluginChannels();
 
         logger.info("TinyLobby plugin enabled");
     }
@@ -75,5 +76,13 @@ public final class TinyLobby extends JavaPlugin {
                 0,
                 1
         );
+    }
+
+    /**
+     * Registers a plugin channel to communicate with proxy server
+     */
+    private void registerPluginChannels() {
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        PlayerSender.setPlugin(this);
     }
 }
