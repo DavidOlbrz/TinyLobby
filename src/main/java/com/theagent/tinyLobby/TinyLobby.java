@@ -59,6 +59,7 @@ public final class TinyLobby extends JavaPlugin {
      */
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(gui, this);
+        getServer().getPluginManager().registerEvents(new EnvironmentController(), this);
     }
 
     /**
