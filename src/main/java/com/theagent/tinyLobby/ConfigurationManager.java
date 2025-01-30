@@ -64,9 +64,7 @@ public class ConfigurationManager {
         return new Server(
                 config.getString(path + "name"),
                 config.getString(path + "proxy-name"),
-                Material.getMaterial(config.getString(path + "item")),
-                config.getString(path + "host"),
-                config.getInt(path + "port")
+                Material.getMaterial(config.getString(path + "item"))
         );
     }
 

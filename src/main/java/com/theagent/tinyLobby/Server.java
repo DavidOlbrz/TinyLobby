@@ -7,15 +7,11 @@ public class Server {
     private final String name;
     private final String proxyName;
     private final Material item;
-    private final String host;
-    private final int port;
 
-    public Server(String name, String proxyName, Material item, String host, int port) {
+    public Server(String name, String proxyName, Material item) {
         this.name = name;
         this.proxyName = proxyName;
         this.item = item;
-        this.host = host;
-        this.port = port;
     }
 
     public String getName() {
@@ -28,14 +24,6 @@ public class Server {
 
     public Material getItem() {
         return item;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public int getPort() {
-        return port;
     }
 
 }
