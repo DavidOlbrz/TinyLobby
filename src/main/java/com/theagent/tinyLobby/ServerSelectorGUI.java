@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Set;
 
 public class ServerSelectorGUI implements Listener {
@@ -35,7 +36,7 @@ public class ServerSelectorGUI implements Listener {
         // exit server
         gui.setItem(
                 gui.getSize() - 1,
-                createItem(Material.BARRIER, Names.EXIT_ITEM_NAME, NamedTextColor.RED)
+                createItem(Material.BARRIER, Names.EXIT_ITEM_NAME, NamedTextColor.RED, null)
         );
         // servers
         addServers();
@@ -61,7 +62,7 @@ public class ServerSelectorGUI implements Listener {
             Server info = configManager.getServerInfo(server);
             gui.setItem(
                     Integer.parseInt(server),
-                    createItem(info.getItem(), info.getName(), NamedTextColor.WHITE)
+                    createItem(info.getItem(), info.getName(), NamedTextColor.WHITE, info.getLore())
             );
         });
     }
@@ -77,13 +78,19 @@ public class ServerSelectorGUI implements Listener {
     public ItemStack createItem(
             @NotNull final Material material,
             @Nullable final String name,
-            @Nullable final TextColor nameColor
+            @Nullable final TextColor nameColor,
+            @Nullable final List<Component> lore
     ) {
         final ItemStack item = new ItemStack(material, 1);
 
         if (name != null && nameColor != null) {
             ItemMeta meta = item.getItemMeta();
             meta.displayName(Component.text(name, nameColor));
+
+            if (lore != null) {
+                meta.lore(lore);
+            }
+
             item.setItemMeta(meta);
         }
 
