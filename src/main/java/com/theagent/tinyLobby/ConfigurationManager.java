@@ -1,9 +1,12 @@
 package com.theagent.tinyLobby;
 
 import io.papermc.paper.annotation.DoNotUse;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class ConfigurationManager {
@@ -61,11 +64,27 @@ public class ConfigurationManager {
      */
     public Server getServerInfo(String server) {
         String path = "servers." + server + ".";
+
+        List<String> lore = config.getStringList(path + "lore");
+        ArrayList<Component> loreComponents = null;
+        if (!lore.isEmpty()) {
+            loreComponents = new ArrayList<>();
+            for (String line : lore) {
+                loreComponents.add(parseLore(line));
+            }
+        }
+
         return new Server(
                 config.getString(path + "name"),
                 config.getString(path + "proxy-name"),
-                Material.getMaterial(config.getString(path + "item"))
+                Material.getMaterial(config.getString(path + "item")),
+                loreComponents
         );
+    }
+
+    private Component parseLore(String lore) {
+        // TODO correctly parse formatting codes
+        return Component.text(lore);
     }
 
 }
