@@ -1,3 +1,5 @@
+# Plugin version - do not change!
+plugin-version: "1.0.1"
 # Title of the Server Selector GUI window
 title: "Choose a server:"
 # Message displayed when leaving the server

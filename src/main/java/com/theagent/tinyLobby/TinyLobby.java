@@ -34,6 +34,14 @@ public final class TinyLobby extends JavaPlugin {
         registerPluginChannels();
 
         logger.info("TinyLobby plugin enabled");
+
+        // if the plugin was recently updated, send a warning to the console
+        if (configManager.getWasUpdated() > 0) {
+            logger.warning(String.format(
+                    "TinyLobby was updated to %s, you should reconfigure the plugin config!",
+                    this.getPluginMeta().getVersion()
+            ));
+        }
     }
 
     /**
@@ -60,6 +68,7 @@ public final class TinyLobby extends JavaPlugin {
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(gui, this);
         getServer().getPluginManager().registerEvents(new EnvironmentController(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(configManager), this);
     }
 
     /**
@@ -86,4 +95,5 @@ public final class TinyLobby extends JavaPlugin {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         PlayerSender.setPlugin(this);
     }
+
 }
