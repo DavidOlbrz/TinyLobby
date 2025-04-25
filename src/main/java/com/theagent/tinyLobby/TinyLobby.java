@@ -68,7 +68,7 @@ public final class TinyLobby extends JavaPlugin {
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(gui, this);
         getServer().getPluginManager().registerEvents(new EnvironmentController(), this);
-        getServer().getPluginManager().registerEvents(new PlayerListener(configManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(configManager, gui), this);
     }
 
     /**
@@ -76,16 +76,19 @@ public final class TinyLobby extends JavaPlugin {
      * Constantly opens the Server Selector GUI for every player.
      */
     private void registerScheduler() {
-        getServer().getScheduler().scheduleSyncRepeatingTask(
-                this,
-                () -> getServer().getOnlinePlayers().forEach(player -> {
-                    if (!Names.TextComponentToString(player.getOpenInventory().title()).equals(Names.SERVER_SELECTOR_GUI_TITLE)) {
-                        gui.open(player);
-                    }
-                }),
-                0,
-                1
-        );
+        // only activate if configured
+        if (!configManager.getAllowClosing()) {
+            getServer().getScheduler().scheduleSyncRepeatingTask(
+                    this,
+                    () -> getServer().getOnlinePlayers().forEach(player -> {
+                        if (!Names.TextComponentToString(player.getOpenInventory().title()).equals(Names.SERVER_SELECTOR_GUI_TITLE)) {
+                            gui.open(player);
+                        }
+                    }),
+                    0,
+                    1
+            );
+        }
     }
 
     /**

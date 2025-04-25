@@ -2,6 +2,8 @@
 plugin-version: "1.0.1"
 # Title of the Server Selector GUI window
 title: "Choose a server:"
+# Allow players to close the GUI
+allow-closing: false
 # Message displayed when leaving the server
 disconnect-message: "Bye!"
 # List of servers players can join

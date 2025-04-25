@@ -162,6 +162,15 @@ public class ConfigurationManager {
     }
 
     /**
+     * Get if players are allowed to close the GUI
+     *
+     * @return Players can close GUI
+     */
+    public boolean getAllowClosing() {
+        return config.getBoolean("allow-closing");
+    }
+
+    /**
      * Parses the lore into a usable (Text-)Component
      *
      * @param lore single lore line

@@ -10,9 +10,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class PlayerListener implements Listener {
 
     private final ConfigurationManager config;
+    private final ServerSelectorGUI gui;
 
-    public PlayerListener(ConfigurationManager config) {
+    public PlayerListener(ConfigurationManager config, ServerSelectorGUI gui) {
         this.config = config;
+        this.gui = gui;
     }
 
     @EventHandler
@@ -28,6 +30,11 @@ public class PlayerListener implements Listener {
             );
             // decrease counter lowering the amount of times the message will be shown
             config.decreaseWasUpdated();
+        }
+
+        // players allowed to close the GUI -> open GUI once
+        if (config.getAllowClosing()) {
+            gui.open(player);
         }
     }
 
