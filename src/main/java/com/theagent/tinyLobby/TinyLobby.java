@@ -77,10 +77,11 @@ public final class TinyLobby extends JavaPlugin {
     private void registerScheduler() {
         // only activate if configured
         if (!configManager.getAllowClosing()) {
+            String configuredTitle = configManager.getTitle();
             getServer().getScheduler().scheduleSyncRepeatingTask(
                     this,
                     () -> getServer().getOnlinePlayers().forEach(player -> {
-                        if (!Names.TextComponentToString(player.getOpenInventory().title()).equals(Names.SERVER_SELECTOR_GUI_TITLE)) {
+                        if (!Names.TextComponentToString(player.getOpenInventory().title()).equals(configuredTitle)) {
                             gui.open(player);
                         }
                     }),

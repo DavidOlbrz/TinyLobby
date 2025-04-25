@@ -85,7 +85,7 @@ public class PlayerListener implements Listener {
         event.setCancelled(true);
 
         // check if it is the correct GUI
-        if (Names.TextComponentToString(event.getView().title()).equals(Names.SERVER_SELECTOR_GUI_TITLE)) {
+        if (Names.TextComponentToString(event.getView().title()).equals(config.getTitle())) {
 
             // ignore if item in quick bar was clicked
             if (event.getSlotType().equals(InventoryType.SlotType.QUICKBAR)) {
