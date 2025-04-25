@@ -66,9 +66,8 @@ public final class TinyLobby extends JavaPlugin {
      * Registers event to check if a player clicked a GUI item
      */
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(gui, this);
-        getServer().getPluginManager().registerEvents(new EnvironmentController(), this);
-        getServer().getPluginManager().registerEvents(new PlayerListener(configManager, gui), this);
+        ServerSelectorItem selectorItem = new ServerSelectorItem(configManager, gui);
+        getServer().getPluginManager().registerEvents(new PlayerListener(configManager, gui, selectorItem), this);
     }
 
     /**

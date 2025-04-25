@@ -97,36 +97,8 @@ public class ServerSelectorGUI implements Listener {
         return item;
     }
 
-    /**
-     * Check if a player clicked on GUI item
-     *
-     * @param event InventoryClickEvent
-     */
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        // check if it is the correct GUI
-        if (Names.TextComponentToString(event.getView().title()).equals(Names.SERVER_SELECTOR_GUI_TITLE)) {
-            event.setCancelled(true); // cancel movement of items
-
-            int slot = event.getRawSlot(); // get the slot that was clicked
-
-            // check if an item was clicked
-            if (event.getView().getItem(slot) == null) {
-                return;
-            }
-
-            Player player = (Player) event.getWhoClicked(); // get the player who clicked
-
-            // check if "exit server" was clicked
-            if (slot == gui.getSize() - 1) {
-                player.kick(Component.text(configManager.getDisconnectMessage()), PlayerKickEvent.Cause.PLUGIN);
-                return;
-            }
-
-            // send player to the selected server
-            Server clickedServer = configManager.getServerInfo("" + slot);
-            PlayerSender.send(player, clickedServer.getProxyName());
-        }
+    public int getSize() {
+        return gui.getSize();
     }
 
 }

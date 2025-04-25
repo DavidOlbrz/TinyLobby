@@ -171,6 +171,33 @@ public class ConfigurationManager {
     }
 
     /**
+     * Get the item which opens the GUI
+     *
+     * @return item
+     */
+    public String getSelectorItem() {
+        return config.getString("selector-item");
+    }
+
+    /**
+     * Get the name of the item which opens the GUI
+     *
+     * @return name
+     */
+    public String getSelectorName() {
+        return config.getString("selector-name");
+    }
+
+    /**
+     * Get the slot the selector item will be in
+     *
+     * @return slot number
+     */
+    public int getSelectorSlot() {
+        return config.getInt("selector-slot");
+    }
+
+    /**
      * Parses the lore into a usable (Text-)Component
      *
      * @param lore single lore line
