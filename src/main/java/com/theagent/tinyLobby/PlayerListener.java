@@ -47,6 +47,9 @@ public class PlayerListener implements Listener {
             config.decreaseWasUpdated();
         }
 
+        // clear player inventory
+        player.getInventory().clear();
+
         if (config.getAllowClosing()) {
             // players allowed to close the GUI -> open GUI once
             gui.open(player);
