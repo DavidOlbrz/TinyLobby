@@ -15,14 +15,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class ServerSelectorGUI implements Listener {
 
-    private final ConfigurationManager configManager;
+    private final ConfigurationManager config;
+    private final Logger logger;
     private Inventory gui;
 
-    public ServerSelectorGUI(ConfigurationManager configManager) {
-        this.configManager = configManager;
+    public ServerSelectorGUI(ConfigurationManager configManager, Logger logger) {
+        this.config = configManager;
+        this.logger = logger;
         initialize();
     }
 
@@ -30,7 +33,24 @@ public class ServerSelectorGUI implements Listener {
      * Adds all items to the GUI
      */
     public void initialize() {
-        gui = Bukkit.createInventory(null, 54, Component.text(configManager.getTitle()));
+        int guiSize = config.getSize();
+
+        // check for unsupported GUI sizes
+        if (guiSize != 27 && guiSize != 54) {
+            if (guiSize < 9 || guiSize > 54) {
+                logger.severe("GUI size must be between 9 and 54! Reverting to default size (54).");
+                guiSize = 54;
+            } else {
+                if (guiSize % 9 != 0) {
+                    logger.severe("GUI size must be a multiple of 9! Reverting to default size (54).");
+                    guiSize = 54;
+                } else {
+                    logger.warning("Unsupported GUI size! May cause bugs.");
+                }
+            }
+        }
+
+        gui = Bukkit.createInventory(null, guiSize, Component.text(config.getTitle()));
         // exit server
         gui.setItem(
                 gui.getSize() - 1,
@@ -53,10 +73,10 @@ public class ServerSelectorGUI implements Listener {
      * Add all configured servers to the GUI
      */
     private void addServers() {
-        Set<String> servers = configManager.getServers();
+        Set<String> servers = config.getServers();
 
         servers.forEach(server -> {
-            Server info = configManager.getServerInfo(server);
+            Server info = config.getServerInfo(server);
             gui.setItem(
                     Integer.parseInt(server),
                     createItem(info.getItem(), info.getName(), NamedTextColor.WHITE, info.getLore())

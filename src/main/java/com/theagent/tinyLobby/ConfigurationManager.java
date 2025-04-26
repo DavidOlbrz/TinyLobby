@@ -118,6 +118,15 @@ public class ConfigurationManager {
     }
 
     /**
+     * Get the size of the GUI
+     *
+     * @return GUI size
+     */
+    public int getSize() {
+        return config.getInt("gui-size");
+    }
+
+    /**
      * Get the message shown when disconnecting from the server
      *
      * @return Disconnect message

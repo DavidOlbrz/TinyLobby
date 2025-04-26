@@ -26,7 +26,7 @@ public final class TinyLobby extends JavaPlugin {
         logger = PaperPluginLogger.getLogger(getPluginMeta());
 
         configManager = new ConfigurationManager(this);
-        gui = new ServerSelectorGUI(configManager);
+        gui = new ServerSelectorGUI(configManager, logger);
 
         registerCommands();
         registerEvents();

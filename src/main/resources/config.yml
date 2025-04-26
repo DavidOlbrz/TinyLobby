@@ -2,6 +2,8 @@
 plugin-version: "1.0.1"
 # Title of the Server Selector GUI window
 title: "Choose a server:"
+# Size of the GUI (valid sizes: 54 (double chest), 27 (single chest))
+gui-size: 54
 # Allow players to close the GUI
 allow-closing: false
 # Inventory item that opens the GUI (deactivated if 'allow-closing' is false)
