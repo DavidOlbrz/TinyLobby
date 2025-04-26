@@ -1,5 +1,5 @@
 # Plugin version - do not change!
-plugin-version: "1.0.1"
+plugin-version: "1.1.0"
 # Title of the Server Selector GUI window
 title: "Choose a server:"
 # Size of the GUI (valid sizes: 54 (double chest), 27 (single chest))

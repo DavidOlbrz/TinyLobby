@@ -1,5 +1,5 @@
 name: TinyLobby
-version: '1.0.1'
+version: '1.1.0'
 main: com.theagent.tinyLobby.TinyLobby
 api-version: '1.21.3'
 prefix: TinyLobby
