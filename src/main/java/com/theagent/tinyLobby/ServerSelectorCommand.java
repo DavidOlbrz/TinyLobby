@@ -21,7 +21,7 @@ public class ServerSelectorCommand {
         this.gui = gui;
     }
 
-    public void initialize(LifecycleEventManager<Plugin> manager) {
+    public void initialize(LifecycleEventManager<@org.jetbrains.annotations.NotNull Plugin> manager) {
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register(

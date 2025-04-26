@@ -9,6 +9,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class ConfigurationManager {
@@ -142,7 +143,7 @@ public class ConfigurationManager {
      * @return Servers
      */
     public Set<String> getServers() {
-        return config.getConfigurationSection("servers").getKeys(false);
+        return Objects.requireNonNull(config.getConfigurationSection("servers")).getKeys(false);
     }
 
     /**
@@ -166,7 +167,7 @@ public class ConfigurationManager {
         return new Server(
                 config.getString(path + "name"),
                 config.getString(path + "proxy-name"),
-                Material.getMaterial(config.getString(path + "item")),
+                Material.getMaterial(Objects.requireNonNull(config.getString(path + "item"))),
                 loreComponents
         );
     }

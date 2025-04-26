@@ -56,8 +56,8 @@ public final class TinyLobby extends JavaPlugin {
      * Make commands usable on the server
      */
     private void registerCommands() {
-        LifecycleEventManager<Plugin> manager = getLifecycleManager();
-        
+        LifecycleEventManager<@org.jetbrains.annotations.NotNull Plugin> manager = getLifecycleManager();
+
         new ServerSelectorCommand(configManager, gui).initialize(manager);
     }
 
