@@ -8,10 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
@@ -123,6 +120,16 @@ public class PlayerListener implements Listener {
      */
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
+        event.setCancelled(true);
+    }
+
+    /**
+     * Players should not be able to move
+     *
+     * @param event PlayerMoveEvent
+     */
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
         event.setCancelled(true);
     }
 
