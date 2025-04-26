@@ -57,8 +57,7 @@ public final class TinyLobby extends JavaPlugin {
      */
     private void registerCommands() {
         LifecycleEventManager<Plugin> manager = getLifecycleManager();
-
-        new TinyLobbyCommand(manager, configManager);
+        
         new ServerSelectorCommand(configManager, gui).initialize(manager);
     }
 
