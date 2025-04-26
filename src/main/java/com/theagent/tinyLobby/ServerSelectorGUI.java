@@ -6,10 +6,7 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -18,21 +15,42 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class ServerSelectorGUI implements Listener {
 
-    private final ConfigurationManager configManager;
+    private final ConfigurationManager config;
+    private final Logger logger;
     private Inventory gui;
 
-    public ServerSelectorGUI(ConfigurationManager configManager) {
-        this.configManager = configManager;
+    public ServerSelectorGUI(ConfigurationManager configManager, Logger logger) {
+        this.config = configManager;
+        this.logger = logger;
+        initialize();
     }
 
     /**
      * Adds all items to the GUI
      */
     public void initialize() {
-        gui = Bukkit.createInventory(null, 54, Component.text(configManager.getTitle()));
+        int guiSize = config.getSize();
+
+        // check for unsupported GUI sizes
+        if (guiSize != 27 && guiSize != 54) {
+            if (guiSize < 9 || guiSize > 54) {
+                logger.severe("GUI size must be between 9 and 54! Reverting to default size (54).");
+                guiSize = 54;
+            } else {
+                if (guiSize % 9 != 0) {
+                    logger.severe("GUI size must be a multiple of 9! Reverting to default size (54).");
+                    guiSize = 54;
+                } else {
+                    logger.warning("Unsupported GUI size! May cause bugs.");
+                }
+            }
+        }
+
+        gui = Bukkit.createInventory(null, guiSize, Component.text(config.getTitle()));
         // exit server
         gui.setItem(
                 gui.getSize() - 1,
@@ -48,7 +66,6 @@ public class ServerSelectorGUI implements Listener {
      * @param player Player to open GUI
      */
     public void open(Player player) {
-        initialize();
         player.openInventory(gui);
     }
 
@@ -56,10 +73,10 @@ public class ServerSelectorGUI implements Listener {
      * Add all configured servers to the GUI
      */
     private void addServers() {
-        Set<String> servers = configManager.getServers();
+        Set<String> servers = config.getServers();
 
         servers.forEach(server -> {
-            Server info = configManager.getServerInfo(server);
+            Server info = config.getServerInfo(server);
             gui.setItem(
                     Integer.parseInt(server),
                     createItem(info.getItem(), info.getName(), NamedTextColor.WHITE, info.getLore())
@@ -97,36 +114,8 @@ public class ServerSelectorGUI implements Listener {
         return item;
     }
 
-    /**
-     * Check if a player clicked on GUI item
-     *
-     * @param event InventoryClickEvent
-     */
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        // check if it is the correct GUI
-        if (Names.TextComponentToString(event.getView().title()).equals(Names.SERVER_SELECTOR_GUI_TITLE)) {
-            event.setCancelled(true); // cancel movement of items
-
-            int slot = event.getRawSlot(); // get the slot that was clicked
-
-            // check if an item was clicked
-            if (event.getView().getItem(slot) == null) {
-                return;
-            }
-
-            Player player = (Player) event.getWhoClicked(); // get the player who clicked
-
-            // check if "exit server" was clicked
-            if (slot == gui.getSize() - 1) {
-                player.kick(Component.text(configManager.getDisconnectMessage()), PlayerKickEvent.Cause.PLUGIN);
-                return;
-            }
-
-            // send player to the selected server
-            Server clickedServer = configManager.getServerInfo("" + slot);
-            PlayerSender.send(player, clickedServer.getProxyName());
-        }
+    public int getSize() {
+        return gui.getSize();
     }
 
 }

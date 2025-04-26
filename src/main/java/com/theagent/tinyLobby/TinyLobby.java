@@ -26,7 +26,7 @@ public final class TinyLobby extends JavaPlugin {
         logger = PaperPluginLogger.getLogger(getPluginMeta());
 
         configManager = new ConfigurationManager(this);
-        gui = new ServerSelectorGUI(configManager);
+        gui = new ServerSelectorGUI(configManager, logger);
 
         registerCommands();
         registerEvents();
@@ -56,19 +56,17 @@ public final class TinyLobby extends JavaPlugin {
      * Make commands usable on the server
      */
     private void registerCommands() {
-        LifecycleEventManager<Plugin> manager = getLifecycleManager();
+        LifecycleEventManager<@org.jetbrains.annotations.NotNull Plugin> manager = getLifecycleManager();
 
-        new TinyLobbyCommand(manager, configManager);
-        new ServerSelectorCommand().initialize(manager, gui);
+        new ServerSelectorCommand(configManager, gui).initialize(manager);
     }
 
     /**
      * Registers event to check if a player clicked a GUI item
      */
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(gui, this);
-        getServer().getPluginManager().registerEvents(new EnvironmentController(), this);
-        getServer().getPluginManager().registerEvents(new PlayerListener(configManager), this);
+        ServerSelectorItem selectorItem = new ServerSelectorItem(configManager, gui);
+        getServer().getPluginManager().registerEvents(new PlayerListener(configManager, gui, selectorItem), this);
     }
 
     /**
@@ -76,16 +74,20 @@ public final class TinyLobby extends JavaPlugin {
      * Constantly opens the Server Selector GUI for every player.
      */
     private void registerScheduler() {
-        getServer().getScheduler().scheduleSyncRepeatingTask(
-                this,
-                () -> getServer().getOnlinePlayers().forEach(player -> {
-                    if (!Names.TextComponentToString(player.getOpenInventory().title()).equals(Names.SERVER_SELECTOR_GUI_TITLE)) {
-                        gui.open(player);
-                    }
-                }),
-                0,
-                1
-        );
+        // only activate if configured
+        if (!configManager.getAllowClosing()) {
+            String configuredTitle = configManager.getTitle();
+            getServer().getScheduler().scheduleSyncRepeatingTask(
+                    this,
+                    () -> getServer().getOnlinePlayers().forEach(player -> {
+                        if (!Names.TextComponentToString(player.getOpenInventory().title()).equals(configuredTitle)) {
+                            gui.open(player);
+                        }
+                    }),
+                    0,
+                    1
+            );
+        }
     }
 
     /**

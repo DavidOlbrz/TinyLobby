@@ -4,8 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 public class Names {
-
-    final static String SERVER_SELECTOR_GUI_TITLE = "Choose a server:";
+    
     final static String EXIT_ITEM_NAME = "Exit Server";
 
     /**

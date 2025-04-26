@@ -9,6 +9,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class ConfigurationManager {
@@ -104,7 +105,8 @@ public class ConfigurationManager {
      */
     @ApiStatus.Experimental
     public void reload() {
-        plugin.getConfig();
+        plugin.reloadConfig();
+        config = plugin.getConfig();
         plugin.logger.info("Reloaded configuration successfully.");
     }
 
@@ -115,6 +117,15 @@ public class ConfigurationManager {
      */
     public String getTitle() {
         return config.getString("title");
+    }
+
+    /**
+     * Get the size of the GUI
+     *
+     * @return GUI size
+     */
+    public int getSize() {
+        return config.getInt("gui-size");
     }
 
     /**
@@ -132,7 +143,7 @@ public class ConfigurationManager {
      * @return Servers
      */
     public Set<String> getServers() {
-        return config.getConfigurationSection("servers").getKeys(false);
+        return Objects.requireNonNull(config.getConfigurationSection("servers")).getKeys(false);
     }
 
     /**
@@ -156,9 +167,45 @@ public class ConfigurationManager {
         return new Server(
                 config.getString(path + "name"),
                 config.getString(path + "proxy-name"),
-                Material.getMaterial(config.getString(path + "item")),
+                Material.getMaterial(Objects.requireNonNull(config.getString(path + "item"))),
                 loreComponents
         );
+    }
+
+    /**
+     * Get if players are allowed to close the GUI
+     *
+     * @return Players can close GUI
+     */
+    public boolean getAllowClosing() {
+        return config.getBoolean("allow-closing");
+    }
+
+    /**
+     * Get the item which opens the GUI
+     *
+     * @return item
+     */
+    public String getSelectorItem() {
+        return config.getString("selector-item");
+    }
+
+    /**
+     * Get the name of the item which opens the GUI
+     *
+     * @return name
+     */
+    public String getSelectorName() {
+        return config.getString("selector-name");
+    }
+
+    /**
+     * Get the slot the selector item will be in
+     *
+     * @return slot number
+     */
+    public int getSelectorSlot() {
+        return config.getInt("selector-slot");
     }
 
     /**
