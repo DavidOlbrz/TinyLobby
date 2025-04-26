@@ -23,6 +23,7 @@ public class ServerSelectorGUI implements Listener {
 
     public ServerSelectorGUI(ConfigurationManager configManager) {
         this.configManager = configManager;
+        initialize();
     }
 
     /**
@@ -45,7 +46,6 @@ public class ServerSelectorGUI implements Listener {
      * @param player Player to open GUI
      */
     public void open(Player player) {
-        initialize();
         player.openInventory(gui);
     }
 
