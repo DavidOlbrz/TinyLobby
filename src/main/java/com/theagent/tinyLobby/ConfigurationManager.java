@@ -104,7 +104,8 @@ public class ConfigurationManager {
      */
     @ApiStatus.Experimental
     public void reload() {
-        plugin.getConfig();
+        plugin.reloadConfig();
+        config = plugin.getConfig();
         plugin.logger.info("Reloaded configuration successfully.");
     }
 
