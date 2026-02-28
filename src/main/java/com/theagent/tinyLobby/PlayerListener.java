@@ -43,19 +43,23 @@ public class PlayerListener implements Listener {
         player.setFlying(true);
 
         // blind player to hide world
-        player.addPotionEffect(new PotionEffect(
-                PotionEffectType.BLINDNESS,
-                PotionEffect.INFINITE_DURATION,
-                255,
-                false,
-                false));
-        player.addPotionEffect(new PotionEffect(
-                PotionEffectType.INVISIBILITY,
-                PotionEffect.INFINITE_DURATION,
-                255,
-                false,
-                false
-        ));
+        if (config.getBlindPlayer()) {
+            player.addPotionEffect(new PotionEffect(
+                    PotionEffectType.BLINDNESS,
+                    PotionEffect.INFINITE_DURATION,
+                    255,
+                    false,
+                    false));
+            player.addPotionEffect(new PotionEffect(
+                    PotionEffectType.INVISIBILITY,
+                    PotionEffect.INFINITE_DURATION,
+                    255,
+                    false,
+                    false
+            ));
+        } else {
+            player.removePotionEffect(PotionEffectType.BLINDNESS);
+        }
 
         // check if the player is an Op and if the plugin was recently updated
         if (player.isOp() && config.getWasUpdated() > 0) {
