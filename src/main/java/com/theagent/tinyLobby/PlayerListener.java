@@ -35,6 +35,9 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
+        // hide player join message
+        event.joinMessage(null);
+
         // set flying to true so players don't fall into the void
         player.setAllowFlight(true);
         player.setFlying(true);
@@ -153,6 +156,12 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent event) {
+        // hide player leave message
+        event.quitMessage(null);
     }
 
 }
