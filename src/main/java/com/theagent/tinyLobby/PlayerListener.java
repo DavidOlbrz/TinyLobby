@@ -10,6 +10,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Objects;
 
@@ -32,6 +34,26 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+        // set flying to true so players don't fall into the void
+        player.setAllowFlight(true);
+        player.setFlying(true);
+
+        // blind player to hide world
+        player.addPotionEffect(new PotionEffect(
+                PotionEffectType.BLINDNESS,
+                PotionEffect.INFINITE_DURATION,
+                255,
+                false,
+                false));
+        player.addPotionEffect(new PotionEffect(
+                PotionEffectType.INVISIBILITY,
+                PotionEffect.INFINITE_DURATION,
+                255,
+                false,
+                false
+        ));
+
         // check if the player is an Op and if the plugin was recently updated
         if (player.isOp() && config.getWasUpdated() > 0) {
             player.sendMessage(
