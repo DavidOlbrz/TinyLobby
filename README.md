@@ -11,3 +11,13 @@ allowing players to select and join servers from a list.
 | Minecraft   |                                    1.21.3                                    |
 | Server Type | PaperMC ([1.21.3](https://fill-ui.papermc.io/projects/paper/version/1.21.3)) |
 | Proxy       |              [Velocity](https://papermc.io/downloads/velocity)               |
+
+## Suggested world setup
+
+Set the following properties in `server.properties`:
+
+| Property              | Value                                                                                |
+|-----------------------|--------------------------------------------------------------------------------------|
+| `generate-structures` | `false`                                                                              |
+| `generator-settings`  | `{"biome"\:"minecraft\:plains","layers"\:[{"block"\:"minecraft\:air","height"\:1}]}` |
+| `level-type`          | `minecraft\:flat`                                                                    |

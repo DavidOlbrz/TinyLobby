@@ -182,6 +182,15 @@ public class ConfigurationManager {
     }
 
     /**
+     * Get if players should be blinded
+     *
+     * @return Player should be blind
+     */
+    public boolean getBlindPlayer() {
+        return config.getBoolean("blind-player");
+    }
+
+    /**
      * Get the item which opens the GUI
      *
      * @return item
