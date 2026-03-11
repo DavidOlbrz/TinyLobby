@@ -1,6 +1,7 @@
 package com.theagent.tinyLobby;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.ApiStatus;
@@ -224,8 +225,7 @@ public class ConfigurationManager {
      * @return lore as Component
      */
     private Component parseLore(String lore) {
-        // TODO correctly parse formatting codes
-        return Component.text(lore);
+        return MiniMessage.miniMessage().deserialize(lore);
     }
 
     /**

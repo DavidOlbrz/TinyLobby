@@ -5,7 +5,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 public class Names {
     
-    final static String EXIT_ITEM_NAME = "Exit Server";
+    final static String EXIT_ITEM_NAME = "<red>Exit Server</red>";
 
     /**
      * Extracts the text out of a Component

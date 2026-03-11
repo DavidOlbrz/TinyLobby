@@ -1,8 +1,7 @@
 package com.theagent.tinyLobby;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -54,7 +53,7 @@ public class ServerSelectorGUI implements Listener {
         // exit server
         gui.setItem(
                 gui.getSize() - 1,
-                createItem(Material.BARRIER, Names.EXIT_ITEM_NAME, NamedTextColor.RED, null)
+                createItem(Material.BARRIER, Names.EXIT_ITEM_NAME, null)
         );
         // servers
         addServers();
@@ -79,7 +78,7 @@ public class ServerSelectorGUI implements Listener {
             Server info = config.getServerInfo(server);
             gui.setItem(
                     Integer.parseInt(server),
-                    createItem(info.getItem(), info.getName(), NamedTextColor.WHITE, info.getLore())
+                    createItem(info.getItem(), info.getName(), info.getLore())
             );
         });
     }
@@ -89,20 +88,18 @@ public class ServerSelectorGUI implements Listener {
      *
      * @param material  Item
      * @param name      Display Name
-     * @param nameColor Text Color
      * @return Item
      */
     public ItemStack createItem(
             @NotNull final Material material,
             @Nullable final String name,
-            @Nullable final TextColor nameColor,
             @Nullable final List<Component> lore
     ) {
         final ItemStack item = new ItemStack(material, 1);
 
-        if (name != null && nameColor != null) {
+        if (name != null) {
             ItemMeta meta = item.getItemMeta();
-            meta.displayName(Component.text(name, nameColor));
+            meta.displayName(MiniMessage.miniMessage().deserialize(name));
 
             if (lore != null) {
                 meta.lore(lore);

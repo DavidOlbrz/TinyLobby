@@ -1,6 +1,6 @@
 package com.theagent.tinyLobby;
 
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +20,7 @@ public class ServerSelectorItem {
     public ItemStack createItem() {
         ItemStack selectorItem = new ItemStack(Material.valueOf(config.getSelectorItem()));
         ItemMeta selectorMeta = selectorItem.getItemMeta();
-        selectorMeta.displayName(Component.text(config.getSelectorName()));
+        selectorMeta.displayName(MiniMessage.miniMessage().deserialize(config.getSelectorName()));
         selectorItem.setItemMeta(selectorMeta);
         return selectorItem;
     }
