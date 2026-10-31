@@ -2,7 +2,6 @@ package com.theagent.tinyLobby;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,8 +11,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import java.util.Objects;
 
 public class PlayerListener implements Listener {
 
@@ -95,9 +92,8 @@ public class PlayerListener implements Listener {
 
         if (event.getAction().isRightClick()) {
             ItemStack usedItem = event.getItem();
-            if (usedItem != null && PlainTextComponentSerializer.plainText().serialize(
-                    Objects.requireNonNull(usedItem.getItemMeta().displayName())).equals(config.getSelectorName())
-            ) {
+
+            if (usedItem != null && event.getPlayer().getInventory().getHeldItemSlot() == config.getSelectorSlot()) {
                 gui.open(event.getPlayer());
             }
         }
